@@ -5,10 +5,10 @@
 		
 	$uid = $_GET['uid'];
 	$query = "SELECT id,category,id_xtra FROM catalogue WHERE id=$uid LIMIT 1";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	
-	if($result && mysql_num_rows($result)==1){
-		$row = mysql_fetch_array($result);
+	if($result && mysqli_num_rows($result)==1){
+		$row = mysqli_fetch_array($result);
 		$MasterID = $row['id'];
 		if(!empty($row['id_xtra'])) $MasterID = $row['id_xtra'];
 

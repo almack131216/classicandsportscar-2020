@@ -5,6 +5,7 @@
 		////////////////
 		/// Item Details		
 		function ItemDetails($getID,$page){
+			global $dbc;
 			global $client,$gp_arr_details,$clientCats;
 			global $gp_arr_details_cat5,$gp_arr_details_cat7,$gp_arr_details_cat10;
 			global $gp_uploadPath;
@@ -18,10 +19,10 @@
 			$ItemQuery .= " FROM catalogue as c, catalogue_cats AS cc, catalogue_subcats AS csc WHERE c.category=cc.id AND c.subcategory=csc.id AND c.id=$getID LIMIT 1";
 
 
-			$ItemResult = mysql_query($ItemQuery);
-			if($ItemResult && mysql_num_rows($ItemResult)==1){
+			$ItemResult = mysqli_query($dbc, $ItemQuery);
+			if($ItemResult && mysqli_num_rows($ItemResult)==1){
 				//$imgArray = array();
-				$ItemArray = mysql_fetch_array($ItemResult);
+				$ItemArray = mysqli_fetch_array($ItemResult);
 				$my_name		= stripslashes($ItemArray['name']);				
 				$my_status		= $ItemArray['status'];
 				$my_detail_1	= $ItemArray['detail_1'];
@@ -91,14 +92,14 @@
 					// IF TESTIMONIALS (ARE ASSIGNED TO THIS ITEM)
 					//$query="SELECT id,name,description,upload_date FROM catalogue WHERE category=${clientCats['Testimonials']} AND detail_2 LIKE '%$getID%' LIMIT 1";
 					$query="SELECT id,name,description,upload_date FROM catalogue WHERE category=${clientCats['Testimonials']} AND detail_2 IN ($getID) LIMIT 1";
-					$result=mysql_query($query);
+					$result=mysqli_query($dbc, $query);
 					
-					if($result && mysql_num_rows($result)>=1){
+					if($result && mysqli_num_rows($result)>=1){
 						$Testimonial = '<div class="details">'."\r\n";
 						$Testimonial .= '<h2>Testimonial from new owner...</h2>';
 												
-						//for($tmpcount=0;$tmpcount<=mysql_num_rows($result);$tmpcount++){
-							$row = mysql_fetch_assoc($result);
+						//for($tmpcount=0;$tmpcount<=mysqli_num_rows($result);$tmpcount++){
+							$row = mysqli_fetch_assoc($result);
 							//$Testimonial .= '<p><strong>'.$row['name'].'</strong>, '.$row['upload_date'].'<br/>';
 							$tmpDesc = $CMSTextFormat->stripCrap2_out($row['description']);
 							//$tmpDesc = $row['description'];
@@ -185,10 +186,10 @@
 									
 									$tmpID=trim($purchased_arr[$tmpcount]);
 									$purchased_query = "SELECT id,name,image_large,detail_1 FROM catalogue WHERE category={$clientCats['Classifieds']} AND id=$tmpID";
-									$purchased_result = mysql_query($purchased_query);
+									$purchased_result = mysqli_query($dbc, $purchased_query);
 									
-									if($purchased_result && mysql_num_rows($purchased_result)==1){
-										$row = mysql_fetch_array($purchased_result);
+									if($purchased_result && mysqli_num_rows($purchased_result)==1){
+										$row = mysqli_fetch_array($purchased_result);
 										$name=$Catalogue->addYearToName($row['detail_1'],$row['name']);
 										//Link to archive ads
 										
@@ -196,11 +197,11 @@
 										
 										$MorePhotos.='<a href="'.$gp_uploadPath['large'].$row['image_large'].'" title="'.$name.'" rel="lightbox-journey"><img src="'.$gp_uploadPath['thumbs'].$row['image_large'].'" alt="'.$name.'"></a>'."\r\n"; //LARGE IMAGES
 										$more_query="SELECT id,image_large FROM catalogue WHERE id_xtra=$tmpID";
-										$more_result=mysql_query($more_query);
-										if($more_result && mysql_num_rows($more_result)>=1){
+										$more_result=mysqli_query($dbc, $more_query);
+										if($more_result && mysqli_num_rows($more_result)>=1){
 																					
-											for($tmpcount_more=0;$tmpcount_more<mysql_num_rows($more_result);$tmpcount_more++){
-												$row_more = mysql_fetch_array($more_result);
+											for($tmpcount_more=0;$tmpcount_more<mysqli_num_rows($more_result);$tmpcount_more++){
+												$row_more = mysqli_fetch_array($more_result);
 												$MorePhotos.='<a href="'.$gp_uploadPath['large'].$row_more['image_large'].'" title="'.$name.'" rel="lightbox-journey" style="display:none;"><img src="'.$gp_uploadPath['thumbs'].$row_more['image_large'].'" alt="'.$name.'"></a>'."\r\n"; //(MORE)LARGE IMAGES												
 											}
 											
@@ -233,11 +234,11 @@
 				$AudioQuery .= " FROM (catalogue c LEFT JOIN tbl_related_subcats rsc on rsc.itemID2=c.id)";
 				$AudioQuery .= " WHERE c.image_large LIKE '%.mp3%' AND rsc.itemID=$getID GROUP BY rsc.itemID2 ORDER BY c.position_insubcat ASC";
 				
-				$AudioResult = mysql_query($AudioQuery);
-				if($AudioResult && mysql_num_rows($AudioResult)>=1){			
+				$AudioResult = mysqli_query($dbc, $AudioQuery);
+				if($AudioResult && mysqli_num_rows($AudioResult)>=1){			
 					$FileNum = 1;
-					for($i=0;$i<mysql_num_rows($AudioResult);$i++){
-						$row = mysql_fetch_row($AudioResult);
+					for($i=0;$i<mysqli_num_rows($AudioResult);$i++){
+						$row = mysqli_fetch_row($AudioResult);
 						if(!$CMSTextFormat->StringContains($row[2],"http://")){							
 							$AudioFile = $gp_uploadPath['large'].$row[2];
 							$DownloadAudioFile = $AudioFile;
@@ -319,15 +320,15 @@ EOD;
 					
 					$searchQuery .= " ORDER BY id DESC";
 					//$content .= $searchQuery;
-					$searchResult = mysql_query($searchQuery);
+					$searchResult = mysqli_query($dbc, $searchQuery);
 					
-					if($searchResult && mysql_num_rows($searchResult)>=1){
-						$numRows = mysql_num_rows($searchResult);
+					if($searchResult && mysqli_num_rows($searchResult)>=1){
+						$numRows = mysqli_num_rows($searchResult);
 						$inStock='<div class="details">'."\r\n";
 						$inStock.='<h2>For sale in our showroom</h2>'."\r\n";
 						$inStock.='<ul>';
 						for($i=0;$i<$numRows;$i++){
-							$row = mysql_fetch_array($searchResult);
+							$row = mysqli_fetch_array($searchResult);
 							$inStock.='<li>'.$row['detail_1'].' <a href="'.$SEO_links->GenerateLink(array('type'=>'item','id'=>$row['id'],'name'=>$row['name'])).'" title="Link to this '.$row['name'].'">'.$row['name'].'</a></li>';
 						}
 						$inStock.='</ul>'."\r\n";
@@ -349,6 +350,7 @@ EOD;
 		//
 		// Need this function to populate the slideshow slimbox (hidden images in 'rel'
 		function ShowExtraImages($getID,$getID_XTRA){
+			global $dbc;
 			global $gp_uploadPath,$CMSShared;
 			// LOOK FOR EXTRA IMAGES
 			$xtra_query = "SELECT name, image_large FROM catalogue WHERE id_xtra=$getID AND image_large!=''";
@@ -356,9 +358,9 @@ EOD;
 			
 			$XtraImages = '';
 			
-			$xtra_result = mysql_query($xtra_query);
-			if($xtra_result && mysql_num_rows($xtra_result)>=1){
-				while($xtraRow = mysql_fetch_array($xtra_result, MYSQL_ASSOC)){
+			$xtra_result = mysqli_query($dbc, $xtra_query);
+			if($xtra_result && mysqli_num_rows($xtra_result)>=1){
+				while($xtraRow = mysqli_fetch_array($xtra_result, mysqli_ASSOC)){
 					$xtraName = $xtraRow['name'];
 					$xtraImageSRC = $gp_uploadPath['large'].$xtraRow['image_large'];
 					if($CMSShared->IsImage($xtraRow['image_large'])) $XtraImages .= '<a href="'.$xtraImageSRC.'" title="'.$xtraName.'" class="hidden" rel="lightbox-journey"><img src="'.$xtraImageSRC.'" alt="'.$xtraName.'"></a>';

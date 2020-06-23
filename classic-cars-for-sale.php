@@ -80,9 +80,9 @@
 			$subategoryName = $SEO->sanitize(array('string'=>$_GET['subcategoryName'],'from'=>true));
 			//echo '<br>2. '.$subategoryName;
 			$subcatQuery = "SELECT id,subcategory FROM catalogue_subcats WHERE lower(subcategory)='$subategoryName' LIMIT 1";
-			$subcatResult = mysql_query($subcatQuery);
-			if($subcatResult && mysql_num_rows($subcatResult)==1){
-				$subcatRow = mysql_fetch_row($subcatResult);
+			$subcatResult = mysqli_query($dbc,$subcatQuery);
+			if($subcatResult && mysqli_num_rows($subcatResult)==1){
+				$subcatRow = mysqli_fetch_row($subcatResult);
 				$subcategoryID = $subcatRow[0];
 				$subcategoryName = $subcatRow[1];				
 			}
@@ -109,9 +109,9 @@
 		//$itemArray_query .= " AND (c.upload_date<=$TheDayToday AND (c.spare_date='0000-00-00' OR c.spare_date='' OR c.spare_date>$TheDayToday))";
 		$itemArray_query .= " LIMIT 1";// AND r.id=c.$field_region
 		$echo .= $itemArray_query;
-		$itemArray_result = mysql_query($itemArray_query);
-		if($itemArray_result && mysql_num_rows($itemArray_result)==1){
-			$row = mysql_fetch_array($itemArray_result);
+		$itemArray_result = mysqli_query($dbc,$itemArray_query);
+		if($itemArray_result && mysqli_num_rows($itemArray_result)==1){
+			$row = mysqli_fetch_array($itemArray_result);
 			$itemName = $row['name'];
 			$categoryID = $row['categoryID'];
 			$categoryName = $row['categoryName'];

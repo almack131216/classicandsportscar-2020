@@ -49,14 +49,14 @@
 		
 		
 		$query = "SELECT id,name,image_large FROM catalogue WHERE id=$itemID OR id_xtra=$itemID ORDER BY id ASC";
-		$result = mysql_query($query);
-		if($result && mysql_num_rows($result)>=1){
+		$result = mysqli_query($dbc, $query);
+		if($result && mysqli_num_rows($result)>=1){
 			$PhotoTitle = '';
 			$PrimaryPhotoTitle = '';
 			$files_to_zip = array();
 			$ii=0;
-			for($i=0;$i<mysql_num_rows($result);$i++){
-				$row = mysql_fetch_row($result);
+			for($i=0;$i<mysqli_num_rows($result);$i++){
+				$row = mysqli_fetch_row($result);
 				
 				$imgSRC = $gp_uploadPath['large'].$row[2];
 				if($CMSShared->FileExists($imgSRC)){

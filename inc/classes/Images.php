@@ -5,12 +5,13 @@
 		/////////////
 		/// ImageBox
 		function ImageBox($getID){
+			global $dbc;
 			global $gp_uploadPath;
 			
 			$query = "SELECT id,name,image_large,image_small FROM catalogue WHERE id=$getID LIMIT 1";
-			$result = mysql_query($query);
-			if($result && mysql_num_rows($result)==1){
-				$array = mysql_fetch_array($result);
+			$result = mysqli_query($dbc, $query);
+			if($result && mysqli_num_rows($result)==1){
+				$array = mysqli_fetch_array($result);
 				$title = $array['name'];
 				$image = $array['image_large'];
 				//if(!empty($array['image_small']) && $array['image_small']!=$array['image_large']) $image = $array['image_small'];
@@ -26,11 +27,11 @@
 						
 		
 						$thumb_query = "SELECT id, name, image_large, image_small description FROM catalogue WHERE id=$getID OR id_xtra=$getID ORDER BY position_initem ASC";//id=$getID OR 
-						$thumb_result = mysql_query($thumb_query);
-						if($thumb_result && mysql_num_rows($thumb_result)>1){
+						$thumb_result = mysqli_query($dbc, $thumb_query);
+						if($thumb_result && mysqli_num_rows($thumb_result)>1){
 							$PageData.='<ul id="thumbs">';
-							for($thumbcount=0;$thumbcount<mysql_num_rows($thumb_result);$thumbcount++){
-								$thumb_array = mysql_fetch_array($thumb_result);
+							for($thumbcount=0;$thumbcount<mysqli_num_rows($thumb_result);$thumbcount++){
+								$thumb_array = mysqli_fetch_array($thumb_result);
 								$thumb_name = $title;
 								if(!empty($thumb_array['name'])) $thumb_name = $thumb_array['name'];
 								if(empty($thumb_array['name']) && !empty($thumb_array['description'])) $thumb_name = strip_tags($thumb_array['description']);
@@ -242,14 +243,14 @@
 			if($getID){
 				$query = "SELECT * FROM catalogue WHERE image_large!='' AND (id=$getID OR id_xtra=$getID) ORDER BY position_initem ASC";
 				if($getLimit) $query.=" LIMIT $getLimit";
-				$result = mysql_query($query);
-				if($result && mysql_num_rows($result)>=1){
+				$result = mysqli_query($dbc, $query);
+				if($result && mysqli_num_rows($result)>=1){
 					$HasAudioFile = true;				
 					$StartWrap='<div id="slideshow_wrap_all">'."\r\n";
 					$SSData='';
 					
-					if(mysql_num_rows($result)==1){
-						$imgArr = mysql_fetch_array($result);
+					if(mysqli_num_rows($result)==1){
+						$imgArr = mysqli_fetch_array($result);
 						$imgSRC = $gp_uploadPath['large'].$imgArr['image_large'];
 						
 						if($Images->IsPortrait($imgSRC)){
@@ -287,8 +288,8 @@
 						$DefaultHyperlinkTarget = "_self";
 						
 						$tmpImageListID = 0;//need this as if date is not valid, the sequence will skip rows & mess up order
-						for($tmpcount=0;$tmpcount<mysql_num_rows($result);$tmpcount++){
-							$imgArr = mysql_fetch_array($result);
+						for($tmpcount=0;$tmpcount<mysqli_num_rows($result);$tmpcount++){
+							$imgArr = mysqli_fetch_array($result);
 							$thumbSRC = $gp_uploadPath['thumbs'].$imgArr['image_large'];
 							$imgSRC = $gp_uploadPath['large'].$imgArr['image_large'];
 							$largeSRC = $gp_uploadPath['large'].$imgArr['image_large'];

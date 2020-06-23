@@ -39,6 +39,7 @@
 		//(example): $attributes = array('fullname'=>$FullName,'email'=>$EmailAddress,'password'=>$Password);
 		//$Members->AddMember($attributes);
 		function AddMember($getAttributes){
+			global $dbc;
 			global $Members,$CMSTextFormat;
 			
 			$FullName = $getAttributes['FullName'];
@@ -48,12 +49,12 @@
 			$TheDayToday = date('Y-m-d');
 
 			$insertQuery = "INSERT INTO tbl_members (Id,fname,email,pword,registered) VALUES ('0','$FullName','$EmailAddress','$Password','$TheDayToday')";
-			$insertResult = mysql_query($insertQuery);
+			$insertResult = mysqli_query($dbc, $insertQuery);
 			if($insertResult){
 				return true;
 			}else{
 				echo 'QUERY:'.$insertQuery;
-				echo '<br>'.mysql_error();
+				echo '<br>'.mysqli_error();
 				return false;
 			}
 

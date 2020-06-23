@@ -43,8 +43,8 @@
 
 				$RowNum = 0;				
 				$query = "SELECT * FROM catalogue WHERE category=10 ORDER BY position_insubcat ASC";
-				$result = mysql_query($query);
-				if($result && mysql_num_rows($result)>1){
+				$result = mysqli_query($dbc, $query);
+				if($result && mysqli_num_rows($result)>1){
 					
 					$AccordionContent = <<<EOD
 			<div id="container">
@@ -56,9 +56,9 @@
 <ul id="vertical" class="simple"><ul>
 EOD;
 
-					for($i=0;$i<mysql_num_rows($result);$i++){
+					for($i=0;$i<mysqli_num_rows($result);$i++){
 						$RowNum++;
-						$row = mysql_fetch_array($result);
+						$row = mysqli_fetch_array($result);
 						$AccordionContent .= '<li>';
 						$ExpandTitle = $row['name'];
 						$itemDate = $row['upload_date'];
@@ -75,11 +75,11 @@ EOD;
 						$AccordionContent .= $row['description'];
 						
 						$xtraQuery = "SELECT id,name,image_large,description FROM catalogue WHERE id_xtra=".$row['id']." ORDER BY position_initem ASC";
-						$xtraResult = mysql_query($xtraQuery);
-						if($xtraResult && mysql_num_rows($xtraResult)>=1){
+						$xtraResult = mysqli_query($dbc, $xtraQuery);
+						if($xtraResult && mysqli_num_rows($xtraResult)>=1){
 							
-							for($ii=0;$ii<mysql_num_rows($xtraResult);$ii++){
-								$xtraRow = mysql_fetch_array($xtraResult);
+							for($ii=0;$ii<mysqli_num_rows($xtraResult);$ii++){
+								$xtraRow = mysqli_fetch_array($xtraResult);
 								
 								$AccordionContent .= '<div class="collapse-container_xtra">';
 								$AccordionContent .= '<a href="'.$gp_uploadPath['large'].$xtraRow['image_large'].'" title="'.$xtraRow['name'].'" rel="lightbox-journey" class="enlarge"><img src="'.$gp_uploadPath['primary'].$xtraRow['image_large'].'" class="BorderMe" alt="'.$xtraRow['name'].'"></a>';

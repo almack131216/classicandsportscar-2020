@@ -5,14 +5,15 @@
 		//////////////////////////
 		/// FUNCION // PRINT ITEMS
 		function ItemPreview($getAttributes){
+			global $dbc;
 			global $MainKeywordsBuild,$MainDescriptionBuild,$qs_keywordsArr,$SEO,$SEO_links,$Images,$currentpage,$AppendPageTitle,$Catalogue,$client,$clientCats,$SiteFunctions,$CMSShared,$gp_uploadPath,$CMSTextFormat,$Reviews;
 			
 			if(is_array($getAttributes['itemArray'])){
 				$getItemArray = $getAttributes['itemArray'];
 			}else{
 				$getArrayQuery = "SELECT * FROM catalogue WHERE id=${getAttributes['itemArray']} LIMIT 1";
-				$getArrayResult = mysql_query($getArrayQuery);
-				if($getArrayResult && mysql_num_rows($getArrayResult)==1) $getItemArray = mysql_fetch_array($getArrayResult);
+				$getArrayResult = mysqli_query($dbc,$getArrayQuery);
+				if($getArrayResult && mysqli_num_rows($getArrayResult)==1) $getItemArray = mysqli_fetch_array($getArrayResult);
 			}
 			
 			$getStyle = $getAttributes['itemStyle'];
@@ -128,12 +129,13 @@
 		
 		
 		function PrintNewsBox(){
+			global $dbc;
 			global $SEO,$client,$gp_uploadPath,$clientCats,$CMSShared,$CMSTextFormat;
 			
 			$NewsQuery = "SELECT * FROM catalogue WHERE category=${clientCats['Press']} ORDER BY upload_date DESC LIMIT 1";
-			$NewsResult = mysql_query($NewsQuery);
-			if($NewsResult && mysql_num_rows($NewsResult)>=1){
-				$NewsRow = mysql_fetch_array($NewsResult);
+			$NewsResult = mysqli_query($dbc,$NewsQuery);
+			if($NewsResult && mysqli_num_rows($NewsResult)>=1){
+				$NewsRow = mysqli_fetch_array($NewsResult);
 
 				$attributes = array('type'=>'item','id'=>$NewsRow['id'],'name'=>$NewsRow['name'],'categoryID'=>$NewsRow['category']);
 				$NewsLink = $SEO_links->GenerateLink($attributes);
@@ -158,7 +160,8 @@
 		
 		/////////////////
 		/// Get Item Data (return ALL or selected fields only)
-		function GetItemData($getAttributes){			
+		function GetItemData($getAttributes){	
+			global $dbc;		
 			
 			if(is_array($getAttributes)){
 				$getID = $getAttributes['id'];
@@ -173,13 +176,13 @@
 			
 			
 			$getQuery = "SELECT $getField FROM $getTable WHERE id=$getID LIMIT 1";
-			$getResult = mysql_query($getQuery);
-			if($getResult && mysql_num_rows($getResult)==1){
+			$getResult = mysqli_query($dbc,$getQuery);
+			if($getResult && mysqli_num_rows($getResult)==1){
 				if($getField!="*"){
-					$getArray = mysql_fetch_row($getResult);
+					$getArray = mysqli_fetch_row($getResult);
 					return $getArray[0];
 				}else{
-					$getArray = mysql_fetch_array($getResult);
+					$getArray = mysqli_fetch_array($getResult);
 					return $getArray;
 				}
 			}
@@ -190,6 +193,7 @@
 
 		
 		function PrintSubCats($getAttributes){
+			global $dbc;
 			global $SEO,$SEO_links,$client,$clientCats,$CMSTextFormat,$SiteFunctions,$CMSShared,$gp_uploadPath;		
 			
 			$getTitleString = "Classic Cars For Sale";
@@ -219,11 +223,11 @@
 						
 			$scData = '';
 			$StockCount = 0;
-			$scResult = mysql_query($getQuery);
-			if($scResult && mysql_num_rows($scResult)>=1){
+			$scResult = mysqli_query($dbc,$getQuery);
+			if($scResult && mysqli_num_rows($scResult)>=1){
 				$scData .= '<ul>';
-				for($i=0;$i<mysql_num_rows($scResult);$i++){
-					if($scArray = mysql_fetch_array($scResult)){
+				for($i=0;$i<mysqli_num_rows($scResult);$i++){
+					if($scArray = mysqli_fetch_array($scResult)){
 						$thisID = $scArray['id'];
 						
 						$attributes = array('type'=>'subcategory','id'=>$scArray['subcategoryID'],'subcategoryName'=>$scArray['subcategoryName'],'status'=>$hackStatus);

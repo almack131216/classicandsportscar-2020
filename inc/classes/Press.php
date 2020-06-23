@@ -5,6 +5,7 @@
 		////////////////
 		/// Item Details		
 		function PressItemDetails($getID){
+			global $dbc;
 			global $client,$gp_arr_details,$clientCats;
 			global $gp_uploadPath;
 			global $CMSShared,$CMSTextFormat,$SiteFunctions;
@@ -15,10 +16,10 @@
 			
 			$ItemQuery = "SELECT c.*,cc.status AS categoryStatus, cc.category AS CategoryName FROM catalogue as c, catalogue_cats AS cc WHERE c.category=cc.id AND c.id=$getID LIMIT 1";
 
-			$ItemResult = mysql_query($ItemQuery);
-			if($ItemResult && mysql_num_rows($ItemResult)==1){
+			$ItemResult = mysqli_query($dbc, $ItemQuery);
+			if($ItemResult && mysqli_num_rows($ItemResult)==1){
 
-				$ItemArray = mysql_fetch_array($ItemResult);
+				$ItemArray = mysqli_fetch_array($ItemResult);
 				$my_name		= stripslashes($ItemArray['name']);				
 				$my_status		= $ItemArray['status'];
 				$my_detail_1	= $ItemArray['detail_1'];
@@ -39,9 +40,9 @@
 				
 				//Get PDF attached to this item
 				$pdfQuery = "SELECT name, image_large FROM catalogue WHERE id_xtra=$getID LIMIT 1";
-				$pdfResult = mysql_query($pdfQuery);
-				if($pdfResult && mysql_num_rows($pdfResult)==1){
-					$pdfRow = mysql_fetch_array($pdfResult);
+				$pdfResult = mysqli_query($dbc, $pdfQuery);
+				if($pdfResult && mysqli_num_rows($pdfResult)==1){
+					$pdfRow = mysqli_fetch_array($pdfResult);
 					$pdfSRC = $gp_uploadPath['large'].$pdfRow['image_large'];
 				}
 				//(end) Get PDF

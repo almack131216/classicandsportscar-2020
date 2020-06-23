@@ -76,9 +76,9 @@ EOD;
 $imageBox = '';
 if($currentpage=="home" || $currentpage=="about"){
 	$checkQuery = "SELECT id,name,detail_3 FROM catalogue WHERE category=9 ORDER BY position_insubcat ASC LIMIT 1";
-	$checkResult = mysql_query($checkQuery);
-	if($checkResult && mysql_num_rows($checkResult)==1){
-		$uniqueRow = mysql_fetch_row($checkResult);
+	$checkResult = mysqli_query($dbc,$checkQuery);
+	if($checkResult && mysqli_num_rows($checkResult)==1){
+		$uniqueRow = mysqli_fetch_row($checkResult);
 		$tmpID = $uniqueRow[0];
 	}else{
 		$tmpID = 8697;
@@ -91,8 +91,8 @@ if($currentpage=="home" || $currentpage=="about"){
 }else{
 	$query = "SELECT id,name,image_large,detail_2,detail_3,price FROM catalogue WHERE category=2 AND subcategory=61 AND image_large!='' ORDER BY position_insubcat ASC LIMIT 5";
 }
-$result = mysql_query($query);
-if($result && mysql_num_rows($result)>=1){
+$result = mysqli_query($dbc,$query);
+if($result && mysqli_num_rows($result)>=1){
 	$imageBox .= '<div class="container" id="SwapBG">';
 	
 	if($uniqueRow[1] && $uniqueRow[2]){
@@ -103,9 +103,9 @@ if($result && mysql_num_rows($result)>=1){
 		$tabs = '<ul class="tabs">'."\r\n";
 	}
 	$tab_content = '';
-	for($i=0;$i<mysql_num_rows($result);$i++){
+	for($i=0;$i<mysqli_num_rows($result);$i++){
 		$rowNum = $i+1;
-		$row = mysql_fetch_array($result);
+		$row = mysqli_fetch_array($result);
 		$tabs .= '<li';
 		if($rowNum==1) $tabs .= ' id="firstTab" class="active"';
 		$tabs .= ' id="tab_'.$rowNum.'"><a href="#tab'.$rowNum.'">'.$rowNum.'</a></li>'."\r\n";

@@ -5,6 +5,7 @@
 		//////////////////////////
 		/// FUNCION // PRINT ITEMS
 		function PrintFeatured($getAttributes){
+			global $dbc;
 			global $SEO,$SEO_links,$client,$clientCats,$CMSTextFormat,$SiteFunctions,$CMSShared,$gp_uploadPath;		
 			
 			$getTitleString = "Classic Cars For Sale...";
@@ -19,8 +20,8 @@
 			$getQuery .= " WHERE id_xtra=0 AND category=${clientCats['Classifieds']}";			
 			$getQuery .= " AND status!=0 AND status=$getStatus";
 			$getQuery .= " ORDER BY upload_date DESC";
-			$getResult = mysql_query($getQuery);
-			if($getResult) $StockCount = mysql_num_rows($getResult);
+			$getResult = mysqli_query($dbc, $getQuery);
+			if($getResult) $StockCount = mysqli_num_rows($getResult);
 
 			if($getAttributes['title']) $getTitleString = $getAttributes['title'];
 			if($getAttributes['query']){
@@ -39,11 +40,11 @@
 			
 			$itemQuery = $getQuery;
 			if($getLimit) $itemQuery.=" LIMIT $getLimit";
-			$itemResult = mysql_query($itemQuery);
-			if($itemResult && mysql_num_rows($itemResult)>=1){
+			$itemResult = mysqli_query($dbc, $itemQuery);
+			if($itemResult && mysqli_num_rows($itemResult)>=1){
 				
-				for($i=0;$i<mysql_num_rows($itemResult);$i++){
-					if($itemArray = mysql_fetch_array($itemResult)){
+				for($i=0;$i<mysqli_num_rows($itemResult);$i++){
+					if($itemArray = mysqli_fetch_array($itemResult)){
 						$thisID = $itemArray['id'];
 						$thisTitle = $itemArray['name'];
 						$thisDesc = strip_tags($itemArray['description']);
@@ -112,11 +113,11 @@
 				$FeaturedRow .= '<h1>Latest Cars for Sale at '.$client['name'].', Malton, North Yorkshire</h1>'."\r\n";
 				
 				$query = "SELECT c.* FROM catalogue AS c WHERE c.status=1 AND c.category=${clientCats['Classifieds']} ORDER BY c.upload_date DESC LIMIT 5";
-				$result = mysql_query($query);
-				if($result && mysql_num_rows($result)>=1){
+				$result = mysqli_query($dbc, $query);
+				if($result && mysqli_num_rows($result)>=1){
 					$FeaturedRow .= '<ul class="itemBox">';
-					for($i=0;$i<mysql_num_rows($result);$i++){
-						$row = mysql_fetch_array($result);
+					for($i=0;$i<mysqli_num_rows($result);$i++){
+						$row = mysqli_fetch_array($result);
 						$attributes = array('itemArray'=>$row,'itemStyle'=>"li",'itemClass'=>$itemClass,'itemPage'=>$client['itemPage']);
 						$FeaturedRow .= $Catalogue->ItemPreview($attributes);
 					}

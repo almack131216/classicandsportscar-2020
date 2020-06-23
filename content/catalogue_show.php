@@ -1,5 +1,5 @@
 <?php
-	
+
 	$itemPage = $PaginatorAttributes['itemPage'];
 	$searchLimit = 50;
 	
@@ -38,9 +38,9 @@
 		$paginatorHref .= $getItemNum;
 		if(empty($_GET['pg']) || $_GET['pg']==1){
 			$query = "SELECT * FROM catalogue AS c WHERE c.id=$getItemNum LIMIT 1";
-			$result = mysql_query($query);
-			if($result && mysql_num_rows($result)==1){
-				$row = mysql_fetch_array($result);				
+			$result = mysqli_query($dbc, $query);
+			if($result && mysqli_num_rows($result)==1){
+				$row = mysqli_fetch_array($result);				
 				$itemArray[] = $row;
 				$ItemHighlighted = true;// This is needed to ensure item does not appear twice (as it has been esculated to pos1 as selected)				
 			}
@@ -87,19 +87,19 @@
 		}
 		
 		$searchQuery .= " AND MATCH ($MatchFields) AGAINST ('$qs_keywordsPlus' IN BOOLEAN MODE) ORDER BY relevancyName DESC, relevancy DESC LIMIT $searchLimit";
-		$searchResult = mysql_query($searchQuery);
+		$searchResult = mysqli_query($dbc, $searchQuery);
 		
 		
-		if(!$searchResult || mysql_num_rows($searchResult)==0){
+		if(!$searchResult || mysqli_num_rows($searchResult)==0){
 			$searchQuery = str_replace($CategorySpecific,"",$searchQuery);
-			$searchResult = mysql_query($searchQuery);
+			$searchResult = mysqli_query($dbc, $searchQuery);
 			$categoryEmpty = true;
 		}
 		
-		if($searchResult && mysql_num_rows($searchResult)>=1){
-			$echo .= '<br>'.mysql_num_rows($searchResult).':::'.$searchQuery;
+		if($searchResult && mysqli_num_rows($searchResult)>=1){
+			$echo .= '<br>'.mysqli_num_rows($searchResult).':::'.$searchQuery;
 			$first=false;
-			$totals = mysql_num_rows($searchResult);			
+			$totals = mysqli_num_rows($searchResult);			
 			
 			if($totals>=10){
 				$ResultsSubTitle = '<h2>Your matches have been ordered by relevance</h2>';
@@ -122,7 +122,7 @@ EOD;
 				$RowNum = 0;
 				for($i=0;$i<$totals;$i++){
 					$RowNum++;
-					$row = mysql_fetch_array($searchResult);
+					$row = mysqli_fetch_array($searchResult);
 					$catalogueItems .= '<li>';
 					$ExpandTitle = $row['categoryName'].' -&#62; '.$row['subcategoryName'].' -&#62; '.$row['name'];
 					$ExpandTitle = $CMSTextFormat->highlightWords($ExpandTitle,$qs_keywordsArr);
@@ -140,7 +140,7 @@ EOD;
 			}else{
 				for($i=0;$i<$totals;$i++){
 					$RowNum++;
-					$row = mysql_fetch_array($searchResult);
+					$row = mysqli_fetch_array($searchResult);
 					//$row['name'] = $row['relevancy'].':'.$row['name'];
 					$attributes = array('itemArray'=>$row,'itemStyle'=>"row",'itemPage'=>$itemPage);
 					$catalogueItems .= $Catalogue->ItemPreview($attributes);
@@ -175,9 +175,9 @@ EOD;
 	
 		/// Count total
 		$countQuery = "SELECT COUNT(*) as Num FROM catalogue AS c $WHERE";
-		$countResult = mysql_query($countQuery);
-		if($countResult && mysql_num_rows($countResult)>=1){
-			$totalsRow = mysql_fetch_row($countResult);
+		$countResult = mysqli_query($dbc, $countQuery);
+		if($countResult && mysqli_num_rows($countResult)>=1){
+			$totalsRow = mysqli_fetch_row($countResult);
 			$totals = $totalsRow[0];
 			$total_pgs = ceil($totals / $itemsPerPage);
 			if($_SERVER['HTTP_HOST']=="localhost") $echo .= '<br>TOTAL:'.$totals;
@@ -189,17 +189,17 @@ EOD;
 			$categoryEmpty = true;
 		}
 
-		$sql = "SELECT * FROM catalogue AS c $WHERE LIMIT $from, $itemsPerPage";
-		$result1 = mysql_query($sql);
+		$sql = "SELECT id FROM catalogue AS c $WHERE LIMIT $from, $itemsPerPage";
+		$result1 = mysqli_query($dbc, $sql);
 		if($result1){
-			$num_sql = mysql_num_rows($result1);
+			$num_sql = mysqli_num_rows($result1);
 		}else{
 			$num_sql = 0;
 		}
 
 		//$sql = "SELECT * FROM catalogue AS c $WHERE LIMIT $from, $itemsPerPage";
-		//$result1 = mysql_query($sql);
-		//$num_sql = mysql_num_rows ($result1);		
+		//$result1 = mysqli_query($dbc, $sql);
+		//$num_sql = mysqli_num_rows ($result1);		
 		if($_SERVER['HTTP_HOST']=="localhost") $echo .= '<br>SQL:'.$sql.'('.$num_sql.')</p>';
 		
 		//Build paginator
@@ -227,19 +227,20 @@ EOD;
 	
 		/// Display results
 		if ($num_sql>0) {
-			$i=0;
-			while ($i < $num_sql) {	
-				$id = mysql_result($result1,$i,'id');
+			$i = 0;
+			while($i<$num_sql){
+				$row = mysqli_fetch_array($result1);
+				$id = $row['id'];
+
 				if($id){
-					//$itemArray_query = "SELECT * FROM catalogue WHERE id=$id LIMIT 1"; (basic query of one table)
 					$itemArray_query = "SELECT c.*,cc.category AS categoryName,csc.subcategory AS subcategoryName";
 					$itemArray_query .= " FROM catalogue AS c,catalogue_cats AS cc,catalogue_subcats AS csc";
 					$itemArray_query .= " WHERE c.id=$id AND c.category=cc.id AND c.subcategory=csc.id LIMIT 1";
-					$itemArray_result = mysql_query($itemArray_query);
-					if($itemArray_result && mysql_num_rows($itemArray_result)==1){
-						$row = mysql_fetch_array($itemArray_result);
-						$itemArray[] = $row;					
-						$i++;							
+					$itemArray_result = mysqli_query($dbc, $itemArray_query);
+					if($itemArray_result && mysqli_num_rows($itemArray_result)==1){
+						$row = mysqli_fetch_array($itemArray_result);
+						$itemArray[] = $row;	
+						$i++;				
 					}
 				}
 			}

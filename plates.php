@@ -33,15 +33,15 @@
 				if(!empty($ItemData['description'])) $Content.=$ItemData['description'];
 				
 				$query = "SELECT id,name,price,price_details FROM catalogue WHERE category=${clientCats['Plates']} ORDER BY position_insubcat ASC";
-				$result = mysql_query($query);
-				if($result && mysql_num_rows($result)>=1){
+				$result = mysqli_query($dbc, $query);
+				if($result && mysqli_num_rows($result)>=1){
 					$Content .= '<div class="table">';
 					$Content .= '<div class="tr" id="titles">';
 					$Content .= '<div class="td">Plate</div>';
 					$Content .= '<div class="td">Price</div>';
 					$Content .= '</div>';
-					for($i=0;$i<mysql_num_rows($result);$i++){
-						$row = mysql_fetch_array($result);
+					for($i=0;$i<mysqli_num_rows($result);$i++){
+						$row = mysqli_fetch_array($result);
 						if (is_float($i / 2)) {
 							$Content .= '<div class="tr_shade">';
 						}else{
