@@ -1,0 +1,67 @@
+
+/* GREY: #B1B1B1 */
+
+html {text-align:left;margin:0;padding:0;background:#fff;color:#000;}
+body {font-size:60%;margin:0;}
+* {margin:0;padding:0;color:#000;font:normal 1.0em/1.6em Verdana, Arial, Helvetica, sans-serif;}
+
+
+/********************************************/
+/*********                   ****************/
+/*********  GENERAL STYLES   ****************/
+/*********                   ****************/
+/********************************************/
+
+.header img.logo_topleft {position:absolute;top:10px;left:15px;}
+.header img.logo_topcenter {position:absolute;top:10px;left:100px;}
+.header p {display:none;text-align:right;}
+
+div.wrap_content {width:640px;margin:0;}
+p {margin:0 0 2em 0;text-align:center;}
+p a,
+ul li a { color:#ccc; }
+p a:hover {background:#6B7B9C;color:#fff;}
+.hiddenPic {display:none;}
+.disclaimer {color:#f30;}
+span.highlight {color:#fff;}
+strong {font-weight:bold;}
+
+h1,
+h2 {clear:both;text-align:center;}
+
+
+ul#Main,
+div.frame_left,
+a.BackBut,
+a.NextBut,
+a.EnquireBut,
+#DetailsBox ul,
+ul.minilinks,
+div.contentLeft,
+div#DetailsBox,
+ul#thumbs,
+div.PhotoBoxFooter,
+div.PhotoBox ul,
+input#Submit {display:none;}
+
+div.header,
+div.footer,
+div.contentbox,
+div.contentMiddle#wide,
+div.DetailsBoxWrap,
+div.DetailsBoxWrapMedia,
+div.PhotoBox,
+form#FormContainer {float:none !important;width:100% !important;margin:0 0 10px 0 !important;padding:0 !important;border:none !important;}
+div.PageBreak {page-break-before:always;}
+
+div.footer {clear:both;border-top:1px solid #ccc;}
+
+div#slideshow_wrap_all,
+div#slideshow_wrap,
+div#slideshow img,
+div#FullPhotos img {float:none;display:block;width:640px !important;height:480px !important;}
+
+
+/* Full Photos Page */
+div.PrintHidden {display:block !important;}
+.DoNotPrint {display:none;}

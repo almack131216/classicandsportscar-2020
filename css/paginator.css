@@ -1,0 +1,19 @@
+
+/**********************/
+/***				***/
+/***	PAGINATOR	***/
+/***				***/
+/**********************/
+ul.paginator {float:left;display:block;width:530px;list-style-type:none;text-align:right;margin:10px 0 !important;padding:10px 0;background:transparent url(../stat/paginator_ul.jpg) no-repeat bottom right;}
+#Catalogue ul.paginator {margin:0 0 10px 0 !important;padding:5px 0;text-align:right;background:transparent;}
+
+ul.paginator li {display:inline-block;height:20px;}
+ul.paginator li strong {color:#fff;background:#263762;padding:5px;margin:0 5px;}
+ul.paginator li a {text-decoration:none !important;padding:5px;margin:0 5px;}
+ul.paginator li a:hover {background:#f00;color:#fff !important;text-decoration:none !important;}
+ul.paginator li a span {display:none;}
+/********* Next / Prev **********************/
+ul.paginator li a.BackBut {margin-right:15px !important;padding:3px 0 3px 20px !important;background:transparent url(../stat/back_paginator.gif) no-repeat right top !important;}
+ul.paginator li a.NextBut {margin-left:15px !important;padding:3px 0 3px 20px !important;background:transparent url(../stat/next_paginator.gif) no-repeat right top !important;}
+ul.paginator li a.BackBut:hover {cursor:pointer;color:#fff !important;background:transparent url(../stat/back_paginator.gif) no-repeat right -30px !important;}
+ul.paginator li a.NextBut:hover {cursor:pointer;color:#fff !important;background:transparent url(../stat/next_paginator.gif) no-repeat right -30px !important;}

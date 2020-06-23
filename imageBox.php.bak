@@ -1,0 +1,162 @@
+<?php
+//<script type="text/javascript" src="js/jquery_1-3_min.js"></script>
+//<script type="text/javascript" src="js/jquery_window_modal.js"></script>
+$jsTags.=<<<EOD
+<script type="text/javascript" src="js/jquery_1-3_min.js"></script>
+<script type="text/javascript">
+
+var rotateDelay = 5000; //milliseconds
+var rotateTabs=true;
+var rotateTimeout = "";
+
+function switchTabs(obj){
+	$("ul.tabs li.active").removeClass("active"); //Remove any "active" class
+	$(obj).addClass("active"); //Add "active" class to selected tab
+	$(".tab_content").hide(); //Hide all tab content
+	
+	var activeTab = $(obj).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+	$(activeTab).fadeIn(); //Fade in the active ID content
+	return false;
+	
+	var nextTab = $(obj).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+	$(activeTab).fadeIn(); //Fade in the active ID content
+	return false;
+}
+
+function doRotateTabs(){ //recursive function
+	if (rotateTabs) {
+		var rotateTimeout = setTimeout(function(){
+			if (!rotateTabs){
+				clearTimeout(rotateTimeout);
+				return;
+			} else {
+				//alert(currentTab);
+				var currentTab = $('ul.tabs li.active');
+		
+				//$('ul#swap li:last').attr('id')
+				if(currentTab.length == 0 || currentTab.attr('id') == $('ul.tabs li:last-child').attr('id')){ //if there are no active tabs, or we're on the last, show the first
+					switchTabs($('ul.tabs li:first-child'));
+				} else {
+					switchTabs($('ul.tabs li.active').next()); //pass the next element to show onto the function
+				}
+		
+				doRotateTabs();
+			}
+		}, rotateDelay);
+	}
+}
+
+$(document).ready(function() {
+
+	//When page loads...
+	$(".tab_content").hide(); //Hide all content
+	$("ul.tabs li:first-child").addClass("active").show(); //Activate first tab
+	$(".tab_content:first-child").show(); //Show first tab content
+	
+	//start rotation
+	doRotateTabs();
+	
+	//On Click Event
+	$("ul.tabs li").click(function() {
+		switchTabs($(this));
+		rotateTabs=false;
+		return false;
+	});
+
+});
+
+</script>
+EOD;
+
+//http://www.sohtanaka.com/web-design/simple-tabs-w-css-jquery/
+//http://www.sohtanaka.com/web-design/examples/tabs/
+//AMNOTES: FireFox doesn't like ':first' so i use ':nth-child(1)' (OR first-child) instead and ':last-child' instead of :last
+
+
+$imageBox = '';
+if($currentpage=="home" || $currentpage=="about"){
+	$checkQuery = "SELECT id,name,detail_3 FROM catalogue WHERE category=9 ORDER BY position_insubcat ASC LIMIT 1";
+	$checkResult = mysql_query($checkQuery);
+	if($checkResult && mysql_num_rows($checkResult)==1){
+		$uniqueRow = mysql_fetch_row($checkResult);
+		$tmpID = $uniqueRow[0];
+	}else{
+		$tmpID = 8697;
+	}
+	//$tmpID = 10383;
+	$query = "SELECT id,name,image_large,detail_2,detail_3,price FROM catalogue WHERE id=$tmpID OR id_xtra=$tmpID AND image_large!='' ORDER BY position_initem ASC";
+}else{
+	$query = "SELECT id,name,image_large,detail_2,detail_3,price FROM catalogue WHERE category=2 AND subcategory=61 AND image_large!='' ORDER BY position_insubcat ASC LIMIT 5";
+}
+$result = mysql_query($query);
+if($result && mysql_num_rows($result)>=1){
+	$imageBox .= '<div class="container" id="SwapBG">';
+	
+	if($uniqueRow[1] && $uniqueRow[2]){
+		$tmpPageTitle = $uniqueRow[1];
+		$uniqueTab = '<a href="'.$uniqueRow[2].'" title="Link to '.$uniqueRow[1].'" class="uniqueRow">'.$uniqueRow[1].'</a>';
+		$tabs = '<ul class="tabs" style="display:none;">'."\r\n";
+	}else{
+		$tabs = '<ul class="tabs">'."\r\n";
+	}
+	$tab_content = '';
+	for($i=0;$i<mysql_num_rows($result);$i++){
+		$rowNum = $i+1;
+		$row = mysql_fetch_array($result);
+		$tabs .= '<li';
+		if($rowNum==1) $tabs .= ' id="firstTab" class="active"';
+		$tabs .= ' id="tab_'.$rowNum.'"><a href="#tab'.$rowNum.'">'.$rowNum.'</a></li>'."\r\n";
+		
+		$tab_content .= '<div id="tab'.$rowNum.'" class="tab_content">'."\r\n";
+			$linkTag = '<a href="'.$row['detail_3'].'" target="_blank" title="Link to this property in a new window">';
+			
+			$attributes = array('filename'=>$row['image_large'],'size'=>"homepage",'alt'=>$row['name'],'class'=>"large");
+			//$tab_content .= $linkTag;
+			$tab_content .= $Images->ScaleImage($attributes);
+			//$tab_content .= '</a>';
+			
+			$tab_content .= '<div class="backdrop">';
+				$tab_content .= $uniqueTab;
+				//$tab_content .= '<h1>'.$linkTag.$row['name'].' &#124; '.$row['detail_2'].' &#124; '.$CMSTextFormat->Price_StripDecimal($row['price']).'</a></h1>';
+				//$tab_content .= '<h2><a href="#">'.$row['detail_4'].'</a></h2>';
+				//$tab_content .= '<p>';
+				//$tab_content .= '<a href="#">View Product Spec</a>';
+				//$tab_content .= ' &#124; ';
+				//$tab_content .= 'Price: '.$CMSTextFormat->Price_StripDecimal($row['price']);				
+				//$tab_content .= '</p>';
+			$tab_content .= '</div>';
+		$tab_content .= '</div>'."\r\n";
+	}
+	
+
+	
+	//Google Map
+	if($currentpage=="contact"){
+		$LastTabNum = round($rowNum+1);
+		$tabs .= '<li id="tab_'.$LastTabNum.'"><a href="#tab'.$LastTabNum.'">map</a></li>'."\r\n";
+		
+		$tab_content .= '<div id="tab'.$LastTabNum.'" class="tab_content">'."\r\n";			
+			$linkTag = '<a href="contact.php" title="Link to contact details page">';
+			$tab_content .= $linkTag;
+			$tab_content .= $ContactDetails->PrintMap();
+			$tab_content .= '</a>';
+			
+			$tab_content .= '<div class="backdrop">';
+				$tab_content .= '<h1>'.$linkTag.$client['name'].' &#124; '.$client['address'].' &#124; '.$client['postcode'].'</a></h1>';
+			$tab_content .= '</div>';
+		$tab_content .= '</div>'."\r\n";
+	}
+		
+	$tabs .= '</ul>'."\r\n";
+	$imageBox .= $tabs;
+	
+	$imageBox .= '<div class="tab_container">'."\r\n";
+		$imageBox .= $tab_content;
+	$imageBox .= '</div>';
+	$imageBox .= '</div>';
+}
+
+return $imageBox;
+
+
+?>

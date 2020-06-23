@@ -1,0 +1,64 @@
+
+/**************************/
+/***					***/
+/***	REQUEST FORM	***/
+/***					***/
+/**************************/
+
+hr {float:left;display:block;width:490px;color:#f00;background:transparent url(../stat/hr_lr.jpg) no-repeat top left;height:1px;border:none;margin:15px 0;}
+
+fieldset {margin:20px 0;border:none;}
+form#FormContainer {float:left;margin:0 0 20px 0;border:none;width:390px;}
+form#FormContainer.FullWidth {width:490px;}
+
+#FormContainer span.row, #FormContainer p {float:left;width:390px;border:0px solid #f30;margin:0 0 10px 0;}
+#FormContainer.FullWidth span.row, #FormContainer.FullWidth p {width:490px;}
+
+#FormContainer label {float:left;width:140px;text-align:right;font-weight:normal;}
+#FormContainer.FullWidth label {width:165px;}
+#FormContainer label.hidden {display:none;}
+#FormContainer label span,
+p span.mandatory {color:#f30;}
+
+#FormContainer input, #FormContainer textarea {float:right;width:235px;padding:3px;color:#000;}
+#FormContainer.FullWidth input, #FormContainer.FullWidth textarea {width:305px;}
+
+#FormContainer select {float:right;width:243px;color:#000;border:1px solid #ccc;}
+#FormContainer.FullWidth select {width:313px;}
+
+#FormContainer select option {color:#000;padding:3px 0;}
+#FormContainer input.Radio, #FormContainer input.Checkbox {float:none;width:20px;margin:0 5px 0 20px;border:none;}
+#FormContainer input.normal, #FormContainer textarea.normal, #FormContainer select {background:#f5f5f5;border:1px solid #ccc;}
+#FormContainer input.error, #FormContainer textarea.error {background:#fef;border:1px solid #f30;}
+#FormContainer input#Submit {display:block;outline:none;text-align:right;font-weight:normal;margin:10px 0;padding:3px 20px 3px 0;width:160px;background:transparent url(../stat/next.gif) no-repeat right top;color:#333;border:none;}
+#FormContainer input#Submit:hover {background:transparent url(../stat/next.gif) no-repeat right -30px;cursor:pointer;color:#f00 !important;}
+
+p.error, p span.error {display:block;width:385px;background:#ff9 url(../stat/error.gif) no-repeat 20px center;color:#f30 !important;border:2px solid #f30;font-weight:bold;margin:20px 0 !important;padding:10px 10px 10px 90px;}
+
+.LV_validation_message{
+    font-weight:bold;
+}
+
+.LV_valid {
+    color:#00CC00;
+}
+	
+.LV_invalid {
+    color:#CC0000;
+}
+    
+.LV_valid_field,
+input.LV_valid_field:hover, 
+input.LV_valid_field:active,
+textarea.LV_valid_field:hover, 
+textarea.LV_valid_field:active {
+    border: 1px solid #00CC00;
+}
+    
+.LV_invalid_field, 
+input.LV_invalid_field:hover, 
+input.LV_invalid_field:active,
+textarea.LV_invalid_field:hover, 
+textarea.LV_invalid_field:active {
+    border: 1px solid #CC0000 !important;
+}

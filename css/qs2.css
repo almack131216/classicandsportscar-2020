@@ -1,0 +1,41 @@
+
+/****************************************/
+/**********                  ************/
+/**********{   QUICKSEARCH  }************/
+/**********                  ************/
+/****************************************/
+
+#quicksearch {
+	float:left;
+	margin:0 0 20px 0;
+	padding:7px;
+	font-size:x-small;
+	text-align:left;
+	width:690px;
+	background:#F0F5F7;
+	border:1px solid #D7D7D7;
+}
+#quicksearch h1 {display:none;}
+span.Results {float:right;}
+#quicksearch fieldset {padding:0;margin:0;border:none;}
+#quicksearch label {}
+#quicksearch form, #quicksearch input {padding:0;margin:0;}
+.qs_container,
+.subcategory,
+.categories {padding:0;margin:0;}
+#quicksearch select {width:106px;font-size:x-small;margin:0;padding:2px;background:#fff;color:#333;border:1px solid #666;}
+#quicksearch select.category,
+#quicksearch select.subcategory {width:150px;}
+#quicksearch select option {color:#333;}
+#quicksearch input#qs_keywords {width:110px;font-size:x-small;margin:0;padding:2px;background:#fff;color:#333;border:1px solid #666;}
+#quicksearch input#qssubmit {float:right;background:transparent url(../stat/next.gif) no-repeat left top;color:#000;font-weight:bold;margin:5px 0 0 0;padding:3px 20px 3px 0;text-decoration:none;text-align:right;border:none;}
+#quicksearch input#qssubmit:hover {background-position:right -30px;cursor:pointer;}
+
+.qs_container span {float:left;font-size:x-small;text-align:left;width:125px;padding:0;margin:0;}
+.qs_container span.category,
+.qs_container span.subcategory {width:170px;}
+.qs_container span.keywords {width:140px;}
+
+.qs_container a {float:right;margin-top:15px;}
+
+p.ss_init {margin:0;padding:0;}

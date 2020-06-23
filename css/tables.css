@@ -1,0 +1,16 @@
+div.table {border:1px solid #ccc;margin-bottom:20px;}
+
+div.table,
+div.table .tr,
+div.table .tr_shade,
+div.table .td {float:left;display:block;}
+
+div.table,
+div.table .tr,
+div.table .tr_shade {width:320px;}
+div.table .td {width:140px;padding:5px 10px;}
+
+div.table .tr#titles {background:#fff url(../stat/tr_titles.jpg) repeat-x bottom left;border-bottom:1px solid #ccc;}
+div.table .tr#titles .td {font-weight:bold !important;}
+
+div.table .tr_shade {background:#F9F9F9;}

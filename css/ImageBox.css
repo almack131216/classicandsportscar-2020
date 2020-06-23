@@ -1,0 +1,9 @@
+div#imageGallery {width:360px;position:relative;margin:0;padding:0;}
+#SpanRight #imageGallery {/*width: 580px;*/}
+img#placeholder {float:left;padding:0;}
+p#caption {float:left;display:none;background:#fff;width:360px;height:50px;margin:0;padding:0;font-size:0.9em;}
+
+ul#thumbs {float:left;display:block;width:360px;margin:0;padding:0;}
+#thumbs li {float:left;display:block;margin:5px 5px 5px 0;padding:0;list-style-type:none;}
+#thumbs li img {border:none;}
+#thumbs li img:hover {border:none;}

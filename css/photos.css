@@ -1,0 +1,38 @@
+.contentbox#FullPhotos,
+.contentbox#FullPhotos h1,
+.contentbox#FullPhotos p {clear:both;text-align:center;}
+
+.contentbox#FullPhotos div.PhotoBox {float:left;display:block;width:640px;border:1px solid #E4E1AE;background:#FFFFD7;margin:0 0 20px 60px;}
+.contentbox#FullPhotos div.PhotoBoxFooter {position:relative;float:left;display:block;width:640px;margin:0;padding:5px 0;}
+.contentbox#FullPhotos div.PhotoBox img {float:left;margin:0;}
+.contentbox#FullPhotos div.PhotoBox p {float:left;margin:0 0 0 10px;}
+.contentbox#FullPhotos div.PhotoBox p.noscript {float:none;color:#f30 !important;text-align:center !important;margin:5px 0;}
+.contentbox#FullPhotos div.PageBreak span {font-size:1px;color:#fff;}
+
+div.PhotoBox ul {margin:0 10px 0 0;text-align:center;}
+div.PhotoBox ul.PhotoOptions {float:right;text-align:right;}
+
+div.PhotoBox ul li {
+	list-style:none;
+	display:inline-block;
+	color:#000 !important;
+	margin:0 0 0 20px;
+}
+div.PhotoBox ul.PhotoOptions,
+div.PhotoBox ul.PhotoOptions li {float:right;}
+
+div.PhotoBox ul li a{
+	text-decoration:none;
+	display:block;	
+	font-weight:bold;
+	text-align:left;
+	text-transform:capitalize;
+	color:#000 !important;
+	padding:5px 5px 5px 20px;
+}
+div.PhotoBox ul li a.disk {background:transparent url(../stat/disk.gif) no-repeat 0px 5px;}
+div.PhotoBox ul li a.print {background:transparent url(../stat/print.gif) no-repeat 0px 5px;}
+div.PhotoBox ul li a:hover {text-decoration:underline;}
+
+/* Full Photos Page */
+div.PrintHidden {display:none;}

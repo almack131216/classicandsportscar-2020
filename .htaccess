@@ -1,0 +1,86 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^maltoncoachworks.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www.maltoncoachworks.com$
+RewriteRule ^/?$ "http\:\/\/www\.maltoncoachworks\.co\.uk" [R=301,L]
+
+##ErrorDocument 400 /errors/badrequest.htm
+##ErrorDocument 401 /errors/authreqd.htm
+##ErrorDocument 403 /errors/forbidden.htm
+##ErrorDocument 404 /errors/notfound.htm
+##ErrorDocument 500 /errors/intserver.htm
+
+
+Options +FollowSymLinks
+RewriteEngine on
+
+RewriteRule admin$ http://www.classicandsportscar.ltd.uk/_admin_v3x2/index.php?client=csc2
+
+RewriteRule homepage$ index.php
+RewriteRule classic-cars-for-sale$ classic-cars-for-sale.php
+RewriteRule classic-car-archive$ classic-cars-for-sale.php?status=2
+RewriteRule contact-details$ contact.php
+RewriteRule malton/google-map$ contact.php?map=true
+RewriteRule request-a-classic-cars$ request.php
+RewriteRule registration-plates$ plates.php
+RewriteRule registration-numbers$ plates.php
+RewriteRule news$ news.php
+RewriteRule press$ press.php
+RewriteRule about$ about.php
+RewriteRule history$ history.php
+RewriteRule about-classic-and-sportscar-centre$ about.php
+RewriteRule testimonials$ testimonials.php
+RewriteRule classic-car-transportation$ transport.php
+RewriteRule film-tv-hire$ film-tv-hire.php
+RewriteRule selling-a-classic-car$ selling.php
+RewriteRule privacy$ privacy.php
+
+##Paginator Pages
+RewriteRule classic-cars-for-sale/p(.*)$ classic-cars-for-sale.php?status=1&pg=$1
+RewriteRule classic-car-archive/p(.*)$ classic-cars-for-sale.php?status=2&pg=$1
+RewriteRule testimonials/p(.*)$ testimonials.php?pg=$1
+RewriteRule press/p(.*)$ press.php?pg=$1
+RewriteRule news/p(.*)$ news.php?pg=$1
+
+##Car make list
+RewriteRule (.*)-in-our-showroom$ classic-cars-for-sale.php?subcategoryName=$1
+RewriteRule (.*)-in-our-showroom/p(.*)$ classic-cars-for-sale.php?subcategoryName=$1&pg=$2
+RewriteRule (.*)-sold$ classic-cars-for-sale.php?subcategoryName=$1&status=2
+RewriteRule (.*)-sold/p(.*)$ classic-cars-for-sale.php?subcategoryName=$1&status=2&pg=$2
+
+
+##Details Page
+RewriteRule photos/(.*)/(.*)$ photos.php?uid=$2
+RewriteRule (.*)/classic-cars-for-sale/(.*)$ details.php?uid=$2
+RewriteRule (.*)/classic-cars-sold/(.*)$ details.php?uid=$2
+RewriteRule (.*)/news/(.*)$ details.php?uid=$2
+RewriteRule (.*)/press/(.*)$ details.php?uid=$2
+RewriteRule (.*)/testimonial/(.*)$ details.php?uid=$2
+##Details Page - Point to new file when referencing old file
+RewriteCond %{QUERY_STRING} uid=(.*)
+RewriteRule ^more_details.php(.*) /details.php?uid=%1
+
+##Old Pages
+RewriteRule catalogue.php$ classic-cars-for-sale
+RewriteRule catalogue.php?status=2$ classic-cars-sold
+RewriteRule form.php$ request-a-classic-cars
+RewriteRule category=(.*)$ classic-cars-for-sale.php?subcategory=$1
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+<IfModule php5_module>
+   php_flag asp_tags Off
+   php_flag display_errors Off
+   php_value max_execution_time 30
+   php_value max_input_time 60
+   php_value max_input_vars 1000
+   php_value memory_limit 256M
+   php_value post_max_size 64M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php56"
+   php_value upload_max_filesize 64M
+   php_flag zlib.output_compression Off
+</IfModule>
+# END cPanel-generated php ini directives, do not edit

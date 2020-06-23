@@ -1,0 +1,4 @@
+<Files connect_2_db.php>
+   Order Deny,Allow
+   Deny from all
+</Files>

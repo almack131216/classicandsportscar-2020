@@ -1,0 +1,12 @@
+# ignore folders...
+accordion
+stat
+slimbox2
+uploads
+btns
+
+# ignore files...
+error_log
+inc/connect_2_db.php
+XXXcontactForm.php
+Copy of requestForm.php
